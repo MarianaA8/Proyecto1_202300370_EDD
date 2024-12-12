@@ -1,0 +1,20 @@
+# ninja log v6
+6	1367	7556917542437642	CMakeFiles/Proyecto1.dir/main.cpp.obj	2b6e060e34b0652d
+2	434	7556925991795871	build.ninja	c4b05437b99f8bc
+13	1205	7556925992423048	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/MatrizDispersa.cpp.obj	5b2d7cc3d8209605
+8	1230	7556925992367846	CMakeFiles/Proyecto1.dir/src/Usuario.cpp.obj	dde9a6851a5bf251
+21	1264	7556925992498293	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/Node.cpp.obj	a501ed8dc04d5531
+1265	1467	7556926004942066	Proyecto1.exe	78e6537511b885f7
+6	593	7556930589932483	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/MatrizDispersa.cpp.obj	5b2d7cc3d8209605
+594	723	7556930595809776	Proyecto1.exe	78e6537511b885f7
+5	630	7556935461266859	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/MatrizDispersa.cpp.obj	5b2d7cc3d8209605
+13	633	7556935461339237	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/Node.cpp.obj	a501ed8dc04d5531
+633	749	7556935467539493	Proyecto1.exe	78e6537511b885f7
+6	539	7556935910171209	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/MatrizDispersa.cpp.obj	5b2d7cc3d8209605
+540	653	7556935915512148	Proyecto1.exe	78e6537511b885f7
+6	541	7556938111949791	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/MatrizDispersa.cpp.obj	5b2d7cc3d8209605
+541	659	7556938117306106	Proyecto1.exe	78e6537511b885f7
+20	697	7556940416775858	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/Node.cpp.obj	a501ed8dc04d5531
+15	728	7556940416733213	CMakeFiles/Proyecto1.dir/src/MatrizDispersa/MatrizDispersa.cpp.obj	5b2d7cc3d8209605
+9	1048	7556940416669542	CMakeFiles/Proyecto1.dir/main.cpp.obj	2b6e060e34b0652d
+1048	1184	7556940427056359	Proyecto1.exe	78e6537511b885f7

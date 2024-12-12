@@ -1,0 +1,3 @@
+C:/Users/maria/OneDrive/Desktop/mar/2024/Vacaciones Diciembre/Estructura de Datos/Proyecto1/cmake-build-debug/CMakeFiles/Proyecto1.dir
+C:/Users/maria/OneDrive/Desktop/mar/2024/Vacaciones Diciembre/Estructura de Datos/Proyecto1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/maria/OneDrive/Desktop/mar/2024/Vacaciones Diciembre/Estructura de Datos/Proyecto1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
