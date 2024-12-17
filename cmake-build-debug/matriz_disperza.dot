@@ -1,0 +1,8 @@
+digraph G {
+rankdir=LR;
+node [shape=rect, style=filled, fillcolor=lightyellow];
+"Jutiapa" [shape=rect, style=filled, fillcolor=lightblue];
+"Sumpango" [shape=rect, style=filled, fillcolor=lightblue];
+"Max" [shape=rect, style=filled, fillcolor=lightgreen];
+"Sony" [shape=rect, style=filled, fillcolor=lightgreen];
+}

@@ -1,0 +1,8 @@
+digraph AVL {
+    node [fontname="Arial"];
+    "Q0GlMFNiZluIIsK" [label="Q0GlMFNiZluIIsK\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+    "Q0GlMFNiZluIIsK" -> "FjhnsrDY0ZhAjQB";
+    "FjhnsrDY0ZhAjQB" [label="FjhnsrDY0ZhAjQB\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+    "Q0GlMFNiZluIIsK" -> "o4NDASIHjzarMxB";
+    "o4NDASIHjzarMxB" [label="o4NDASIHjzarMxB\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+}

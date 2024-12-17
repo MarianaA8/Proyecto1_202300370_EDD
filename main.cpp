@@ -1,69 +1,98 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <limits>
+#include <bits/atomic_wait.h>
 
 #include "includes/MatrizDispersa/MatrizDispersa.h"
+#include "includes/Arbol/AVL.h"
+#include "includes/Activo.h"
+#include "includes/Usuario.h"
 
 using namespace std;
 
-int menuPricipal() {
+MatrizDispersa *matriz = nullptr;
 
-    cout << "-------------Bienvenido a Renta de Activos-----------\n";
-    cout << "1. Iniciar Sesion\n";
-    cout << "2. Registrarse\n";
-    cout << "3. Salir" << endl;
-    int option;
-    cout << "Ingrese una opcion: " << endl;
-    cin >> option;
+void limpiarEntrada() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+int menuPrincipal() {
+    int option = 0;
+    do {
+        cout << "-------------Bienvenido a Renta de Activos-----------\n";
+        cout << "1. Iniciar Sesion\n";
+        cout << "2. Salir\n";
+        cout << "Ingrese una opcion: ";
+        cin >> option;
+
+        if (cin.fail()) {
+            cout << "Entrada inválida. Por favor, intente de nuevo.\n";
+            limpiarEntrada();
+            option = 0;
+        }
+    } while (option < 1 || option > 2);
+
     return option;
-
 }
 
 int menuAdministrador() {
+    int option = 0;
+    do {
+        cout << "-------------Bienvenido Administrador-----------\n";
+        cout << "1. Registro de Usuario\n";
+        cout << "2. Reporte Matriz Dispersa\n";
+        cout << "3. Reporte Activos Disponibles de un Departamento\n";
+        cout << "4. Reporte Activos Disponibles de una Empresa\n";
+        cout << "5. Reporte de Transacciones\n";
+        cout << "6. Reporte de Activos de un Usuario\n";
+        cout << "7. Activos Rentados por un Usuario\n";
+        cout << "8. Ordenar Transacciones\n";
+        cout << "9. Salir al Menu Principal\n";
+        cout << "Ingrese una opcion: ";
+        cin >> option;
 
-    cout << "-------------Bienvenido Administrador-----------\n";
-    cout << "¿Que deseas hacer hoy?" << endl;
-    cout << "1. Regsitro de Usuario\n";
-    cout << "2. Reporte Matriz Dispersa\n";
-    cout << "3. Reporte Activos Disponibles de un Departamento" << endl;
-    cout << "4. Reporte Activos Disponibles de una Empresa" << endl;
-    cout << "5. Reporte de Transacciones" << endl;
-    cout << "6. Reporte de Activos de un Usuario" << endl;
-    cout << "7. Activos Rentados por un Usuario" << endl;
-    cout << "8. Ordenar Transacciones" << endl;
-    cout << "9. Salir al Menu Principal" << endl;
-    int option;
-    cout << "Ingrese una opcion: " << endl;
-    cin >> option;
+        if (cin.fail()) {
+            cout << "Entrada inválida. Por favor, intente de nuevo.\n";
+            limpiarEntrada();
+            option = 0;
+        }
+    } while (option < 1 || option > 9);
+
     return option;
-
 }
 
-int menuUsuario() {
-    //Deberiamos pedir como parámetro el objeto usuario si lo encontro para iniciar sesion y asi utilizar el objeto que es.
-    cout << "--------------Bievenido Usuario " << "xxxx" << "------------" << endl;
-    cout << "Que deseas hacer hoy?\n";
-    cout << "1. Agregar un Activo" << endl;
-    cout << "2. Eliminar Activo" << endl;
-    cout << "3. Modificar Activo" << endl;
-    cout << "4. Rentar Activo" << endl;
-    cout << "5. Activos Rentados" << endl;
-    cout << "6. Mis Activos Rentados" << endl;
-    cout << "7. Cerrar Sesion" << endl;
-    int option;
-    cout << "Ingrese una opcion: " << endl;
-    cin >> option;
+int menuUsuario(Node *usuario) {
+    int option = 0;
+    do {
+        cout << "--------------Bienvenido Usuario " << usuario->usuario->getNombre() <<"------------\n";
+        cout << "1. Agregar un Activo\n";
+        cout << "2. Eliminar Activo\n";
+        cout << "3. Modificar Activo\n";
+        cout << "4. Rentar Activo\n";
+        cout << "5. Activos Rentados\n";
+        cout << "6. Mis Activos Rentados\n";
+        cout << "7. Cerrar Sesion\n";
+        cout << "Ingrese una opcion: ";
+        cin >> option;
+
+        if (cin.fail()) {
+            cout << "Entrada inválida. Por favor, intente de nuevo.\n";
+            limpiarEntrada();
+            option = 0;
+        }
+    } while (option < 1 || option > 7);
+
     return option;
-
 }
-
 
 std::string generarIDUsuario() {
-    const int longitud = 15; // Longitud fija del ID
+    const int longitud = 15;
     const std::string caracteres = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    std::random_device rd; // Fuente de números aleatorios
-    std::mt19937 generador(rd()); // Motor de generación de números
-    std::uniform_int_distribution<> distribucion(0, caracteres.size() - 1); // Rango de índices
+    std::random_device rd;
+    std::mt19937 generador(rd());
+    std::uniform_int_distribution<> distribucion(0, caracteres.size() - 1);
 
     std::string id;
     for (int i = 0; i < longitud; ++i) {
@@ -73,138 +102,187 @@ std::string generarIDUsuario() {
 }
 
 void RegistrarUsuario() {
-    string nombre;
-    string password;
-    string Departamento;
-    string Empresa;
+    if (matriz == nullptr) {
+        cout << "Error: La matriz dispersa no está inicializada.\n";
+        return;
+    }
 
-    cout << "Ingresa tu nombre: " << endl;
+    string nombre, password, Departamento, Empresa, username;
+    cout << "-------------------Registrar Usuario----------------" << endl;
+    cout << "Ingresa tu nombre: ";
     cin >> nombre;
-    cout << "Ingresa tu contrasena: " << endl;
+    cout << "Ingresa tu username: ";
+    cin >> username;
+    cout << "Ingresa tu contrasena: ";
     cin >> password;
-    cout << "Ingresa tu Departamento: " << endl;
+    cout << "Ingresa tu Departamento: ";
     cin >> Departamento;
-    cout << "Ingresa tu Empresa: " << endl;
+    cout << "Ingresa tu Empresa: ";
     cin >> Empresa;
+
+    if (matriz->verificarExistenciaUsuario(username, Departamento, Empresa )) {
+        cout << "Este usuario ya esta registrado" << endl;
+    }else {
+        Usuario *usuario1 = new Usuario(nombre, password, username);
+        matriz->insertarUsuario(usuario1, Departamento, Empresa);
+        cout << "Usuario Registrado Exitosamente" << endl;
+    }
+}
+
+void registrarActivo(Node *usuario) {
+
+    string id, descripcion;
+
+    cout << "ID del Activo" << endl;
+    id = generarIDUsuario();
+    cout << id << endl;
+    cout << "Descripcion de Activo" << endl;
+    cin >> descripcion;
+
+
+    Activo *activoNuevo = new Activo(id, descripcion);
+    usuario->usuario->registrarActivo(activoNuevo);
+}
+
+void eliminarActivo(Node *usuario) {
+
+    cout << "-------------------Eliminar Activo--------------------" << endl;
+
+    cout << "Activos en el arbol de " << usuario->usuario->getNombre() << endl;
+    usuario->usuario->arbolAactivos.obtenerNodos();
+    cout << "--------------------------------------------------" << endl;
+
+    string id;
+
+    cout << "Ingresa el ID del activo a eliminar" << endl;
+    cin >> id;
+
+    usuario->usuario->eliminarActivo(id);
 
 }
 
+void modificarActivo(Node *usuario) {
+
+    cout << "---------------Modificar Activo----------------" << endl;
+
+    cout << "Activos en el arbol de " << usuario->usuario->getNombre() << endl;
+    usuario->usuario->arbolAactivos.obtenerNodos();
+    cout << "--------------------------------------------------" << endl;
+
+    string id, descripcionNueva;
+
+    cout << "Ingresa el ID del Activo que desas modificar:" << endl;
+    cin >> id;
+    cout << "Ingresa la nueva descripción:" << endl;
+    cin >> descripcionNueva;
+
+    usuario->usuario->arbolAactivos.modificarDescripcion(id, descripcionNueva);
+
+}
+
+void mostrarArbol() {
+    cout << "-------------Resporte Activos de un Usuario----------" << endl;
+    string username;
+    cout << "Ingrese el username del usuario del cual desea ver el arbol AVL: " << endl;
+    cin >> username;
+
+
+    auto usuarioEncontrado = matriz->buscarUsuario(username);
+    if (usuarioEncontrado != nullptr) {
+        cout << "Usuario encontrado" << endl;
+        usuarioEncontrado->usuario->arbolAactivos.exportarGrafo("arbol");
+    }else {
+        cout << "Usuario no encontrado :(" << endl;
+    }
+
+}
+
+void rentarUnActivo() {
+    cout << "-------------Rentar Activos-----------" << endl;
+}
+
+
+
+
 
 void inicioSesion() {
-    string id;
-    string password;
-
-    cout << "Ingrese su ID: " << endl;
+    string id, password;
+    cout << "Ingrese su nombre: ";
     cin >> id;
-    cout << "Ingrese su contrasena: " << endl;
+    cout << "Ingrese su contrasena: ";
     cin >> password;
 
     if (id == "1" && password == "Admin") {
         int option = 0;
-        while (option != 9) {
-            option = menuAdministrador();
+        while ((option = menuAdministrador()) != 9) {
             switch (option) {
                 case 1:
                     RegistrarUsuario();
-                break;
+                    break;
                 case 2:
-                    cout << "Opción 2: Reporte Matriz Dispersa\n";
-                break;
+                    matriz->generarGraficoMatriz();
+                    break;
                 case 3:
-                    cout << "Opción 3: Reporte Activos Disponibles de un Departamento\n";
-                break;
+                    break;
                 case 4:
-                    cout << "Opción 4: Reporte Activos Disponibles de una Empresa\n";
-                break;
+                    break;
                 case 5:
-                    cout << "Opción 5: Reporte de Transacciones\n";
-                break;
+                    break;
                 case 6:
-                    cout << "Opción 6: Reporte de Activos de un Usuario\n";
-                break;
-                case 7:
-                    cout << "Opción 7: Activos Rentados por un Usuario\n";
-                break;
-                case 8:
-                    cout << "Opción 8: Ordenar Transacciones\n";
-                break;
-                case 9:
-                    cout << "Saliendo al Menu Principal...\n";
-                break;
+                    mostrarArbol();
+                    break;
                 default:
-                    cout << "Opcion no valida. Intente de nuevo.\n";
+                    cout << "Opción aún no implementada.\n";
             }
         }
-    }else {
-        cout << "Credenciales Incorrectas\n";
-    }
+    } else if (matriz->validarCredenciales(id, password)) {
 
+        auto usuarioEncontrado = matriz->buscarUsuario(id);
+        if (usuarioEncontrado != nullptr) {
 
-    //Aqui faltarian hacer verificaciones dependiendo de la lista de usuarios, pero aun no tenemos la matriz dispersa
-    int option = 0;
-    while (option != 7) {
-        option = menuUsuario();
-        switch (option) {
-            case 1:
-                cout << "Opcion 1: Agregar Activo\n";
-            break;
-            case 2:
-                cout << "Opcion 2: Eliminar Activo\n";
-            break;
-            case 3:
-                cout << "Opcion 3: Modificar Activo\n";
-            break;
-            case 4:
-                cout << "Opcion 4: Rentar Activo\n";
-            break;
-            case 5:
-                cout << "Opcion 5: Activos Rentados\n";
-            break;
-            case 6:
-                cout << "Opcion 6: Mis Activos Rentados\n";
-            break;
-            case 7:
-                cout << "Opcion 7: Cerrar Sesion\n";
-            break;
-            default:
-                cout << "Opcion no valida. Intente de nuevo.\n";
+            int option = 0;
+            while ((option = menuUsuario(usuarioEncontrado)) != 7) {
+                switch (option) {
+                    case 1:
+                        registrarActivo(usuarioEncontrado);
+                    break;
+                    case 2:
+                        eliminarActivo(usuarioEncontrado);
+                    break;
+                    case 3:
+                        modificarActivo(usuarioEncontrado);
+                    break;
+                    case 4:
+                    break;
+                    default:
+                        cout << "Opción no válida.\n";
+                }
+            }
+        } else {
+            cout << "Error: Usuario no encontrado.\n";
         }
-
-
+    } else {
+        cout << "Credenciales Erroneas o el usuario no existe\n";
     }
 }
 
 
 
 int main() {
+    matriz = new MatrizDispersa();
 
-  /*  int option = 0;
-
-    while (option != 3) {
-        option = menuPricipal();
+    int option = 0;
+    while ((option = menuPrincipal()) != 2) {
         switch (option) {
             case 1:
                 inicioSesion();
                 break;
             case 2:
-                RegistrarUsuario();
-                cout << "Usuario Registrado Exitosamente\n";
+                cout << "Saliendo... ¡Hasta luego!\n";
                 break;
-            case 3:
-                break;
-            default:
-                cout << "Opcion no valida!\n";
-
         }
-    }*/
+    }
 
-    MatrizDispersa *matriz = new MatrizDispersa();
-    Usuario* usuario1 = new Usuario("Juan", "1234");
-
-    matriz->insertarUsuario(usuario1, "Columna1", "Fila1");
-
-    cout << "Hola Mundo" << endl;
-
-    return 0;
+    delete matriz;
+return 0;
 }
-

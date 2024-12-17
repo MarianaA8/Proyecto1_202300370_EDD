@@ -20,7 +20,10 @@ private:
 
     Node *insertarCabeceraHor(string nombreCabeH);
     Node *insertarCebeceraVer(string nombreCabeV);
-    void insertarFinal(Usuario *usuario, Node *cabeceraHor, Node *cabeceraVer);
+    void insertarFinal(Node *usuario, Node *cabeceraHor, Node *cabeceraVer);
+
+    bool verificarExtistencia(string nombre);
+    void insertarUsuarioProfuncidad(Node *usuario, string nombreCabeH, string nombreCabeV);
 
 
 public:
@@ -30,17 +33,25 @@ public:
 
     void insertarUsuario(Usuario *usuario, string nombreCabeH, string nombreCabeV);
 
-    /*void insertarFinalDeH(Node *usuario, Node *cabeceraHor);
+    void insertarFinalDeH(Node *usuario, Node *cabeceraHor);
     void insertarFinalDeV(Node *usuario, Node *cabeceraVer);
-    void insertarMedioVer(Node *usuario, Node *vertial);
+    void insertarMedioVer(Node *usuario, Node *vertical);
+    void insertarMedioHor(Node *usuario, Node *horizontal);
 
     Node *estaCabceraHor(Node *node);
     Node *estaCabceraVer(Node *node);
 
-    bool masAbajo(Node *cabeceraVer, string cabeV);
-    bool masDerecha(Node *cabeceraHor, string cabeH);*/
+    bool verificarExistenciaUsuario(string nombre, string nombreCabeH, string nombreCabeV);
+    bool seguirAbajo(Node *cabeceraVer, string cabeV);
+    bool seguirDerecha(Node *cabeceraHor, string cabeH);
 
+    bool validarCredenciales(string nombreUsuario, string password);
 
+    void generarGraficoMatriz();
+
+    Node *busquedaDeNodo(string nombreCabeH, string nombreCabeV);
+
+    Node* buscarUsuario(string nombreUsuario);
 };
 
 

@@ -1,0 +1,18 @@
+digraph AVL {
+    node [fontname="Arial"];
+    "Bart" [label="Bart\nFE: 1", shape=circle, style=filled, fillcolor=lightblue];
+    "Bart" -> "Abi";
+    "Abi" [label="Abi\nFE: 1", shape=circle, style=filled, fillcolor=lightblue];
+    "Abi" -> "Ale";
+    "Ale" [label="Ale\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+    "Bart" -> "Mari";
+    "Mari" [label="Mari\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+    "Mari" -> "Carmen";
+    "Carmen" [label="Carmen\nFE: 1", shape=circle, style=filled, fillcolor=lightblue];
+    "Carmen" -> "Ian";
+    "Ian" [label="Ian\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+    "Mari" -> "Oscar";
+    "Oscar" [label="Oscar\nFE: 1", shape=circle, style=filled, fillcolor=lightblue];
+    "Oscar" -> "Zara";
+    "Zara" [label="Zara\nFE: 0", shape=circle, style=filled, fillcolor=lightblue];
+}
