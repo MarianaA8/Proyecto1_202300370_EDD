@@ -66,7 +66,7 @@ int menuAdministrador() {
 int menuUsuario(Node *usuario) {
     int option = 0;
     do {
-        cout << "--------------Bienvenido Usuario " << usuario->usuario->getNombre() <<"------------\n";
+        cout << "--------------Bienvenido Usuario " << usuario->usuario->getNombre() << "------------\n";
         cout << "1. Agregar un Activo\n";
         cout << "2. Eliminar Activo\n";
         cout << "3. Modificar Activo\n";
@@ -120,9 +120,9 @@ void RegistrarUsuario() {
     cout << "Ingresa tu Empresa: ";
     cin >> Empresa;
 
-    if (matriz->verificarExistenciaUsuario(username, Departamento, Empresa )) {
+    if (matriz->existeElUsuario(username, Departamento, Empresa)) {
         cout << "Este usuario ya esta registrado" << endl;
-    }else {
+    } else {
         Usuario *usuario1 = new Usuario(nombre, password, username);
         matriz->insertarUsuario(usuario1, Departamento, Empresa);
         cout << "Usuario Registrado Exitosamente" << endl;
@@ -130,22 +130,22 @@ void RegistrarUsuario() {
 }
 
 void registrarActivo(Node *usuario) {
-
-    string id, descripcion;
+    string id, descripcion, nombre;
 
     cout << "ID del Activo" << endl;
     id = generarIDUsuario();
     cout << id << endl;
     cout << "Descripcion de Activo" << endl;
     cin >> descripcion;
+    cout << "Nombre del Activo" << endl;
+    cin >> nombre;
 
 
-    Activo *activoNuevo = new Activo(id, descripcion);
+    Activo *activoNuevo = new Activo(id, descripcion, nombre);
     usuario->usuario->registrarActivo(activoNuevo);
 }
 
 void eliminarActivo(Node *usuario) {
-
     cout << "-------------------Eliminar Activo--------------------" << endl;
 
     cout << "Activos en el arbol de " << usuario->usuario->getNombre() << endl;
@@ -158,11 +158,9 @@ void eliminarActivo(Node *usuario) {
     cin >> id;
 
     usuario->usuario->eliminarActivo(id);
-
 }
 
 void modificarActivo(Node *usuario) {
-
     cout << "---------------Modificar Activo----------------" << endl;
 
     cout << "Activos en el arbol de " << usuario->usuario->getNombre() << endl;
@@ -177,7 +175,6 @@ void modificarActivo(Node *usuario) {
     cin >> descripcionNueva;
 
     usuario->usuario->arbolAactivos.modificarDescripcion(id, descripcionNueva);
-
 }
 
 void mostrarArbol() {
@@ -191,18 +188,14 @@ void mostrarArbol() {
     if (usuarioEncontrado != nullptr) {
         cout << "Usuario encontrado" << endl;
         usuarioEncontrado->usuario->arbolAactivos.exportarGrafo("arbol");
-    }else {
+    } else {
         cout << "Usuario no encontrado :(" << endl;
     }
-
 }
 
 void rentarUnActivo() {
     cout << "-------------Rentar Activos-----------" << endl;
 }
-
-
-
 
 
 void inicioSesion() {
@@ -236,24 +229,22 @@ void inicioSesion() {
             }
         }
     } else if (matriz->validarCredenciales(id, password)) {
-
         auto usuarioEncontrado = matriz->buscarUsuario(id);
         if (usuarioEncontrado != nullptr) {
-
             int option = 0;
             while ((option = menuUsuario(usuarioEncontrado)) != 7) {
                 switch (option) {
                     case 1:
                         registrarActivo(usuarioEncontrado);
-                    break;
+                        break;
                     case 2:
                         eliminarActivo(usuarioEncontrado);
-                    break;
+                        break;
                     case 3:
                         modificarActivo(usuarioEncontrado);
-                    break;
+                        break;
                     case 4:
-                    break;
+                        break;
                     default:
                         cout << "Opción no válida.\n";
                 }
@@ -267,9 +258,76 @@ void inicioSesion() {
 }
 
 
-
 int main() {
     matriz = new MatrizDispersa();
+
+    Usuario *user1 = new Usuario("Elian Estrada", "1234", "elian_estrada");
+    Usuario *user2 = new Usuario("Juan Perez", "4567", "juanito");
+    Usuario *user3 = new Usuario("Pedro Rodriguez", "48956", "pedrito");
+    Usuario *user4 = new Usuario("Maria Fernanda", "54321", "mafer");
+    Usuario *user5 = new Usuario("Juan Manuel", "32897", "juanma");
+    Usuario *user6 = new Usuario("Carlos Perez", "721896", "casimiro");
+    Usuario *user7 = new Usuario("Fernando Mendez", "891346", "fuego03");
+   // Usuario *user8 = new Usuario("Alejandra Guzman", "780145", "Alcachofa");
+    //Usuario *user9 = new Usuario("Iraldo MArtinez", "201598", "incrediboy");
+    Usuario *user10 = new Usuario("Antonio Lopez", "20435", "alcachofa");
+
+    matriz->insertarUsuario(user1, "guatemala", "iggs");
+    matriz->insertarUsuario(user2, "jutiapa", "max");
+    matriz->insertarUsuario(user3, "jalapa", "usac");
+    matriz->insertarUsuario(user4, "peten", "cinepolis");
+    matriz->insertarUsuario(user5, "guatemala", "usac");
+    matriz->insertarUsuario(user6, "guatemala", "max");
+    matriz->insertarUsuario(user7, "jutiapa", "cinepolis");
+  //  matriz->insertarUsuario(user8, "jutiapa", "usac");
+  //  matriz->insertarUsuario(user9, "jutiapa", "max");
+    matriz->insertarUsuario(user10, "jutiapa", "usac");
+
+
+    Activo *activo1 = new Activo(generarIDUsuario(), "Madera para albañil", "madera");
+    Activo *activo2 = new Activo(generarIDUsuario(), "Martillos para madera", "martillos");
+    Activo *activo3 = new Activo(generarIDUsuario(), "Caladora para cortar maderas prefabricadas", "caladora");
+    Activo *activo4 = new Activo(generarIDUsuario(), "Barreno para concreto", "barreno");
+    Activo *activo5 = new Activo(generarIDUsuario(), "Balanza con máximo de 25kg", "balanza");
+    Activo *activo6 = new Activo(generarIDUsuario(), "Canastas para frutas y verduras", "canastas");
+    Activo *activo7 = new Activo(generarIDUsuario(), "Linternas para alumbrar cuartos oscuros", "linternas");
+    Activo *activo8 = new Activo(generarIDUsuario(), "Cargadores de teléfonos tipo C", "cargadores");
+    Activo *activo9 = new Activo(generarIDUsuario(), "Cables de todo tipo", "cables");
+    Activo *activo10 = new Activo(generarIDUsuario(), "Lazos para tender ropa", "lazos");
+    Activo *activo11 = new Activo(generarIDUsuario(), "Pequeños termos para bebidas calientes", "termos");
+    Activo *activo12 = new Activo(generarIDUsuario(), "Maletas desde pequeñas a grandes", "maletas");
+    Activo *activo13 = new Activo(generarIDUsuario(), "Todo tipo de películas de acción", "peliculas");
+    Activo *activo14 = new Activo(generarIDUsuario(), "Cassettes con música de todo tipo", "casets");
+    Activo *activo15 = new Activo(generarIDUsuario(), "Pantallas para proyección", "pantallas");
+    Activo *activo16 = new Activo(generarIDUsuario(), "Cañonera para proyección", "cañonera");
+    Activo *activo17 = new Activo(generarIDUsuario(), "Toldo para eventos al exterior", "toldo");
+    Activo *activo18 = new Activo(generarIDUsuario(), "Audífonos para grabaciones de estudio", "audifonos");
+    Activo *activo19 = new Activo(generarIDUsuario(), "Micrófonos de todo tipo", "microfonos");
+    Activo *activo20 = new Activo(generarIDUsuario(), "Pedestales para micrófonos grandes y pequeños", "pedestales");
+    Activo *activo21 = new Activo(generarIDUsuario(), "Atriles para colocar hojas con gancho", "atriles");
+
+    user1->registrarActivo(activo1);
+    user1->registrarActivo(activo2);
+    user1->registrarActivo(activo3);
+    user1->registrarActivo(activo4);
+    user6->registrarActivo(activo5);
+    user6->registrarActivo(activo6);
+    user6->registrarActivo(activo7);
+    user6->registrarActivo(activo8);
+    user6->registrarActivo(activo9);
+    user6->registrarActivo(activo10);
+    user7->registrarActivo(activo11);
+    user7->registrarActivo(activo12);
+    user7->registrarActivo(activo13);
+  //  user9->registrarActivo(activo14);
+  //  user9->registrarActivo(activo15);
+//user9->registrarActivo(activo16);
+//user9->registrarActivo(activo17);
+    user4->registrarActivo(activo18);
+    user4->registrarActivo(activo19);
+    user4->registrarActivo(activo20);
+    user4->registrarActivo(activo21);
+
 
     int option = 0;
     while ((option = menuPrincipal()) != 2) {
@@ -284,5 +342,5 @@ int main() {
     }
 
     delete matriz;
-return 0;
+    return 0;
 }

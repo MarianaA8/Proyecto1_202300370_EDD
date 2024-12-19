@@ -11,12 +11,15 @@ class Activo {
 
     string id;
     string descripcion;
+    string nombre;
 
-    Activo(string id, string descripcion);
+    Activo(string id, string descripcion, string nombre);
 
     void setDescripcion(string descripcion);
 
     string getDescripcion();
+
+    string getNombre();
 };
 
 #endif //ACTIVO_H

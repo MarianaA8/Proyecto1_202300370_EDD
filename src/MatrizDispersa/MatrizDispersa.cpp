@@ -16,7 +16,7 @@ void MatrizDispersa::insertarUsuario(Usuario *usuario, string nombreCabeH, strin
   Node *usuarioNuevo = new Node(usuario);
 
 
-  if(existenCabeceras()){
+  if(existenCabeceras())
 
     Node *cabeceraH = insertarCabeceraHor(nombreCabeH);
     Node *cabeceraV = insertarCebeceraVer(nombreCabeV);
@@ -43,7 +43,7 @@ void MatrizDispersa::insertarUsuario(Usuario *usuario, string nombreCabeH, strin
   }
 
   if (cabeceraHor != nullptr && cabeceraVer != nullptr) {
-    insertarUsuarioProfuncidad(usuarioNuevo, nombreCabeH, nombreCabeV);
+    insertarHaciaAtras(usuarioNuevo, nombreCabeH, nombreCabeV);
     return;
   }
 
@@ -311,7 +311,7 @@ void MatrizDispersa::insertarMedioHor(Node *usuario, Node *horizontal) {
 
 }
 
-Node* MatrizDispersa::busquedaDeNodo(string nombreCabeH, string nombreCabeV) {
+Node* MatrizDispersa::busquedad(string nombreCabeH, string nombreCabeV) {
 
   Node* cabeceraH = cabeceraHorizontal(nombreCabeH);
   Node* cabeceraV = cabeceraVertical(nombreCabeV);
@@ -334,9 +334,9 @@ Node* MatrizDispersa::busquedaDeNodo(string nombreCabeH, string nombreCabeV) {
 
 
 
-void MatrizDispersa::insertarUsuarioProfuncidad(Node *usuario, string nombreCabeH, string nombreCabeV) {
+void MatrizDispersa::insertarHaciaAtras(Node *usuario, string nombreCabeH, string nombreCabeV) {
 
-  Node* nodoExistente = busquedaDeNodo(nombreCabeH, nombreCabeV);
+  Node* nodoExistente = busquedad(nombreCabeH, nombreCabeV);
 
   if (!nodoExistente) {
     std::cerr << "Error: No hay nodo en la intersección de las cabeceras." << std::endl;
@@ -354,7 +354,7 @@ void MatrizDispersa::insertarUsuarioProfuncidad(Node *usuario, string nombreCabe
 }
 
 
-bool MatrizDispersa::verificarExistenciaUsuario(string nombre, string nombreCabeH, string nombreCabeV) {
+bool MatrizDispersa::existeElUsuario(string nombre, string nombreCabeH, string nombreCabeV) {
 
   Node* cabeceraH = cabeceraHorizontal(nombreCabeH);
   Node* cabeceraV = cabeceraVertical(nombreCabeV);
@@ -363,12 +363,12 @@ bool MatrizDispersa::verificarExistenciaUsuario(string nombre, string nombreCabe
     return false;
   }
 
-  Node* NodoCreado = busquedaDeNodo(nombreCabeH, nombreCabeV);
+  Node* NodoCreado = busquedad(nombreCabeH, nombreCabeV);
 
   if (NodoCreado == nullptr) return false;
 
   if (NodoCreado) {
-    if (verificarExtistencia( nombre)) {
+    if (existe( nombre)) {
       return true;
     }
     return false;
@@ -408,7 +408,7 @@ bool MatrizDispersa::validarCredenciales(string username, string contraseña) {
 }
 
 
-bool MatrizDispersa::verificarExtistencia(string nombre) {
+bool MatrizDispersa::existe(string nombre) {
   Node* auxiliarHorizontal = cabeceraHor;
 
   while (auxiliarHorizontal != nullptr) {
@@ -518,33 +518,30 @@ void MatrizDispersa::generarGraficoMatriz() {
 
 Node* MatrizDispersa::buscarUsuario(string nombreUsuario) {
   if (this->cabeceraHor == nullptr) {
-    return nullptr; // Si no hay cabeceras, la matriz está vacía
+    return nullptr;
   }
 
   Node* cabeceraHorizontalActual = this->cabeceraHor;
 
-  // Recorrer todas las cabeceras horizontales
   while (cabeceraHorizontalActual != nullptr) {
     Node* nodoActual = cabeceraHorizontalActual->abajo;
 
-    // Recorrer la columna actual
     while (nodoActual != nullptr) {
       Node* nodoProfun = nodoActual;
 
-      // Recorrer los nodos en profundidad (adelante/atras)
       while (nodoProfun != nullptr) {
         if (nodoProfun->usuario != nullptr) {
-          // Validar credenciales del usuario
+
           if (nodoProfun->usuario->getUsername() == nombreUsuario) {
-            return nodoProfun; // Retorna el nodo encontrado
+            return nodoProfun;
               }
         }
-        nodoProfun = nodoProfun->atras; // Siguiente nodo en profundidad
+        nodoProfun = nodoProfun->atras;
       }
-      nodoActual = nodoActual->abajo; // Baja al siguiente nodo vertical
+      nodoActual = nodoActual->abajo;
     }
-    cabeceraHorizontalActual = cabeceraHorizontalActual->sig; // Siguiente cabecera horizontal
+    cabeceraHorizontalActual = cabeceraHorizontalActual->sig;
   }
 
-  return nullptr; // Usuario no encontrado
+  return nullptr;
 }

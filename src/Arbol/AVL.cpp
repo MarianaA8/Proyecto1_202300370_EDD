@@ -186,7 +186,7 @@ void AVL::obtenerNodos() {
     acumularNodos(this->raiz, objetos);
 
     for (Activo *obj : objetos) {
-        cout << "ID: " << obj->id << "   Descripcion:  " << obj->getDescripcion() << endl;
+        cout << "Nombre: " << obj->getNombre() << "ID: " << obj->id << "   Descripcion:  " << obj->getDescripcion() << endl;
     }
 }
 

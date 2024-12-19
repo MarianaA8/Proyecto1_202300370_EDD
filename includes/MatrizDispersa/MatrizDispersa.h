@@ -22,8 +22,8 @@ private:
     Node *insertarCebeceraVer(string nombreCabeV);
     void insertarFinal(Node *usuario, Node *cabeceraHor, Node *cabeceraVer);
 
-    bool verificarExtistencia(string nombre);
-    void insertarUsuarioProfuncidad(Node *usuario, string nombreCabeH, string nombreCabeV);
+    bool existe(string nombre);
+    void insertarHaciaAtras(Node *usuario, string nombreCabeH, string nombreCabeV);
 
 
 public:
@@ -41,7 +41,7 @@ public:
     Node *estaCabceraHor(Node *node);
     Node *estaCabceraVer(Node *node);
 
-    bool verificarExistenciaUsuario(string nombre, string nombreCabeH, string nombreCabeV);
+    bool existeElUsuario(string nombre, string nombreCabeH, string nombreCabeV);
     bool seguirAbajo(Node *cabeceraVer, string cabeV);
     bool seguirDerecha(Node *cabeceraHor, string cabeH);
 
@@ -49,7 +49,7 @@ public:
 
     void generarGraficoMatriz();
 
-    Node *busquedaDeNodo(string nombreCabeH, string nombreCabeV);
+    Node *busquedad(string nombreCabeH, string nombreCabeV);
 
     Node* buscarUsuario(string nombreUsuario);
 };
